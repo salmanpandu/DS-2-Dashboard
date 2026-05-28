@@ -1,6 +1,6 @@
 # ==============================================================================
 # app.py - ChatKasir Dashboard
-# Streamlit - 3 Halaman: Ringkasan | Analisis | Simulasi
+# Streamlit: Ringkasan | Analisis | Simulasi
 # Berdasarkan notebook: ChatKasir_PB_EDA_Vis_Ins.ipynb
 # ==============================================================================
 
@@ -354,81 +354,4 @@ elif halaman == "📊 Analisis Bisnis":
             fig4 = px.pie(eksplisit_counts, names="Tipe", values="Jumlah", color="Tipe", color_discrete_map={"Harga Disebutkan": C["biru"], "Harga Tidak Disebutkan": C["abu"]}, hole=0.4)
             fig4.update_layout(margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig4, use_container_width=True)
-            st.info("💡 **Analisis:** Mayoritas interaksi teks berjalan tanpa menyebut nominal angka secara gamblang. Kenyataan bahwa hanya sebagian kecil data yang memuat harga membuktikan sistem kecerdasan buatan wajib mengintegrasikan pangkalan data harga internal.")
-
-        st.markdown("---")
-        col_row3_left, col_row3_right = st.columns(2, gap="medium")
-
-        with col_row3_left:
-            st.markdown("### 📌 PB-5: Top 20 Kata Slang Paling Aktif")
-            counter_slang, _ = hitung_slang_aktif()
-            top_slang = pd.DataFrame(counter_slang.most_common(20), columns=["Slang", "Frekuensi"])
-            fig5 = px.bar(top_slang, x="Frekuensi", y="Slang", orientation="h", color_discrete_sequence=[C["kuning"]])
-            fig5.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
-            st.plotly_chart(fig5, use_container_width=True)
-            st.info("💡 **Analisis:** Istilah gaul lokal mendominasi jembatan komunikasi digital konsumen. Penyesuaian algoritma pengenal teks pada tiga puluh ragam kosakata terpopuler ini akan memangkas risiko kegagalan translasi pada mesin kasir otomatis.")
-
-        with col_row3_right:
-            st.markdown("### 📌 PB-6: Distribusi Tipe Kuantitas")
-            qty_counts = df_filtered["qty_numerik"].value_counts().reset_index()
-            qty_counts.columns = ["Tipe Kuantitas", "Jumlah"]
-            qty_counts["Tipe Kuantitas"] = qty_counts["Tipe Kuantitas"].map({True: "Numerik (Angka)", False: "Non-Numerik (Teks)"})
-            fig6 = px.bar(qty_counts, x="Tipe Kuantitas", y="Jumlah", color="Tipe Kuantitas", color_discrete_map={"Numerik (Angka)": C["hijau"], "Non-Numerik (Teks)": C["merah"]})
-            fig6.update_layout(margin=dict(l=0, r=0, t=10, b=0), showlegend=False, height=380)
-            st.plotly_chart(fig6, use_container_width=True)
-            st.info("💡 **Analisis:** Porsi penulisan kuantitas pesanan masih kerap memanfaatkan format alfabet terstruktur. Kebutuhan konverter teks ke angka menjadi komponen mutlak sebelum data dikirim menuju model pemrosesan bahasa alami.")
-
-        st.markdown("---")
-        st.markdown("### 📌 PB-7: Dominasi Kategori Masakan di Database Produk")
-        df_food = muat_makanan()
-        kat_counts = df_food["kategori"].value_counts().reset_index()
-        kat_counts.columns = ["Kategori", "Jumlah Produk"]
-        fig7 = px.bar(kat_counts, x="Jumlah Produk", y="Kategori", orientation="h", color_discrete_sequence=[C["biru"]])
-        fig7.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
-        st.plotly_chart(fig7, use_container_width=True)
-        st.info("💡 **Analisis:** Volume kelompok menu tertentu menumpuk melampaui variasi masakan yang lain. Penambahan sampel data teks baru untuk kategori yang sepi pengunjung diperlukan demi menjaga keseimbangan akurasi prediksi lintas menu.")
-
-    else:
-        st.warning("Tidak ada data yang cocok dengan filter saat ini.")
-
-
-# ==============================================================================
-# BAGIAN 5 - HALAMAN 3: SIMULASI CHATKASIR
-# ==============================================================================
-
-elif halaman == "💬 Simulasi ChatKasir":
-
-    st.title("💬 Simulasi Ekstraksi Pesanan")
-    st.caption("Sistem akan menormalisasi slang lalu mengekstrak entitas secara otomatis.")
-
-    col_input, col_output = st.columns([1, 1], gap="large")
-
-    with col_input:
-        st.subheader("✍️ Teks Obrolan Pelanggan")
-        teks_contoh = "kak pesen 2 nasi goreng spesial sama 1 es teh manis ya, bisa minta totalnya berapa?"
-        teks_input = st.text_area(label="Ketik teks obrolan di sini:", value=teks_contoh, height=200, label_visibility="collapsed")
-        tombol = st.button("🚀 Proses & Ekstrak Entitas", type="primary", use_container_width=True)
-
-    with col_output:
-        st.subheader("📤 Hasil Ekstraksi Model")
-
-        if not tombol:
-            st.markdown("<div style='background:#f0f4f8; border-radius:10px; padding:50px 30px; text-align:center; color:#888; min-height:200px;'>⬅️ Tekan Tombol Proses</div>", unsafe_allow_html=True)
-        else:
-            with st.spinner("⚙️ Menormalisasi slang..."):
-                import time, json
-                time.sleep(1.0)
-                df_slang_sim = muat_slang()
-                kamus         = dict(zip(df_slang_sim["slang"], df_slang_sim["formal"]))
-                teks_norm = " ".join(kamus.get(w, w) for w in teks_input.lower().split())
-                hasil = {
-                    "status"              : "sukses",
-                    "teks_asli"           : teks_input.strip(),
-                    "teks_ternormalisasi" : teks_norm.strip(),
-                    "entitas_terekstrak"  : [{"produk" : "- (model belum terhubung)", "jumlah" : "-", "harga"  : "-"}],
-                }
-
-            st.success("✅ Normalisasi selesai!")
-            st.code(json.dumps(hasil, ensure_ascii=False, indent=2), language="json")
-            st.markdown("**📋 Ringkasan Pesanan:**")
-            st.dataframe(pd.DataFrame(hasil["entitas_terekstrak"]), use_container_width=True)
+            st.info("💡 **Analisis:** Mayor
