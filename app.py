@@ -264,7 +264,23 @@ if halaman == "🏠 Ringkasan Data":
 
     st.markdown("---")
 
-    st.subheader("📋 7 Pertanyaan Bisnis (Metode SMART + 4W)")
+    st.subheader("📋 Formulasi Pertanyaan Bisnis")
+    st.markdown(
+        "Pertanyaan bisnis merupakan fondasi analitik dasar yang berfungsi sebagai kompas operasional. "
+        "Rumusan ini mendefinisikan masalah riil di lapangan, mengarahkan proses pengumpulan bukti, "
+        "dan mencegah pencarian pola data acak yang tidak memiliki nilai guna bagi efisiensi UMKM. "
+        "Penetapan arah yang jelas ini mendasari keputusan kami mengadopsi metode SMART + 4W "
+        "dalam menyusun target evaluasi di bawah ini."
+    )
+    
+    with st.expander("ℹ️ Mengapa Menggunakan Metode SMART + 4W?"):
+        st.markdown(
+            "Kerangka Kerja SMART menjamin pertanyaan bersifat Spesifik, Measurable (terukur), "
+            "Action-oriented (orientasi aksi), Relevan, dan Time-bound (batasan waktu). "
+            "Kombinasi dengan formula 4W (What, Why, Where, When) mempertajam visualisasi data "
+            "sehingga setiap grafik mampu memicu satu tindakan koreksi operasional yang nyata."
+        )
+
     pb_data = pd.DataFrame([
         {"Kode": "PB-1", "4W": "What", "Pertanyaan": "Apa 20 produk yang paling sering dipesan pelanggan?", "Aksi untuk UMKM": "Prioritaskan stok & promo produk hero"},
         {"Kode": "PB-2", "4W": "What", "Pertanyaan": "Berapa rata-rata & median harga satuan produk eksplisit?", "Aksi untuk UMKM": "Tetapkan benchmark HPP berdasarkan median"},
@@ -318,7 +334,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig1 = px.bar(top_produk, x="Jumlah Pesanan", y="Produk", orientation="h", color_discrete_sequence=[C["biru"]])
             fig1.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig1, use_container_width=True)
-            st.info("💡 **Analisis:** Konsumen didominasi oleh kelompok produk tertentu yang menguasai lebih dari setengah total antrean pesanan. Distribusi yang timpang ini membuktikan adanya item hero yang menjadi magnet utama omzet UMKM.")
+            st.info("💡 **Explanatory Insight:** Evaluasi terhadap data transaksional membuktikan adanya penumpukan volume pesanan pada variasi menu tertentu. Konsentrasi pesanan yang timpang ini menegaskan urgensi alokasi stok bahan baku secara asimetris, fokus penuh pada dua puluh menu utama penentu omzet usaha.")
 
         with col_row1_right:
             st.markdown("### 📌 PB-2: Sebaran Harga Satuan")
@@ -326,7 +342,7 @@ elif halaman == "📊 Analisis Bisnis":
                 fig2 = px.histogram(df_hv, x="price_satuan", nbins=30, color_discrete_sequence=[C["merah"]])
                 fig2.update_layout(margin=dict(l=0, r=0, t=10, b=0), xaxis_title="Harga Satuan (Rp)", yaxis_title="Frekuensi", height=380)
                 st.plotly_chart(fig2, use_container_width=True)
-                st.info("💡 **Analisis:** Pola persebaran data berkumpul padat di area batas bawah. Angka median ini memberikan panduan aman bagi pemilik usaha untuk menentukan nilai modal kerja dasar sebelum menetapkan persentase keuntungan.")
+                st.info("💡 **Explanatory Insight:** Pemetaan dari 43.227 baris data harga valid memperlihatkan konsentrasi kurva frekuensi yang menumpuk padat di bawah batas 50.000 rupiah. Angka median ini memberikan jangkar kalkulasi riil bagi manajemen dalam menentukan batas atas modal operasional harian.")
             else:
                 st.warning("Tidak ada data harga valid untuk filter saat ini.")
 
@@ -344,7 +360,7 @@ elif halaman == "📊 Analisis Bisnis":
             })
             fig3.update_layout(margin=dict(l=0, r=0, t=10, b=0), showlegend=False, height=380)
             st.plotly_chart(fig3, use_container_width=True)
-            st.info("💡 **Analisis:** Kelompok harga murah dan sedang menguasai porsi pasar terbesar. Struktur data ini mencerminkan karakteristik pembeli aktif yang sangat sensitif terhadap fluktuasi nilai jual produk.")
+            st.info("💡 **Explanatory Insight:** Kluster harga murah dan sedang mendominasi mayoritas mutlak antrean transaksi. Kenyataan ini membuktikan profil konsumen aktif memiliki sensitivitas harga yang tinggi, mengarahkan pemilik toko untuk mengambil opsi paket bundling volume daripada menaikkan margin eceran.")
 
         with col_row2_right:
             st.markdown("### 📌 PB-4: Proporsi Penyebutan Harga Eksplisit")
@@ -354,7 +370,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig4 = px.pie(eksplisit_counts, names="Tipe", values="Jumlah", color="Tipe", color_discrete_map={"Harga Disebutkan": C["biru"], "Harga Tidak Disebutkan": C["abu"]}, hole=0.4)
             fig4.update_layout(margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig4, use_container_width=True)
-            st.info("💡 **Analisis:** Mayoritas interaksi teks berjalan tanpa menyebut nominal angka secara gamblang. Kenyataan bahwa hanya sebagian kecil data yang memuat harga membuktikan sistem kecerdasan buatan wajib mengintegrasikan pangkalan data harga internal.")
+            st.info("💡 **Explanatory Insight:** Rekam log membuktikan sebanyak 56 persen pesan masuk mengabaikan pencantuman harga barang. Temuan ini menegaskan bahwa model kecerdasan buatan wajib mengintegrasikan modul pencarian silang otomatis ke database menu internal, menolak ketergantungan penuh pada teks kasir.")
 
         st.markdown("---")
         col_row3_left, col_row3_right = st.columns(2, gap="medium")
@@ -366,7 +382,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig5 = px.bar(top_slang, x="Frekuensi", y="Slang", orientation="h", color_discrete_sequence=[C["kuning"]])
             fig5.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig5, use_container_width=True)
-            st.info("💡 **Analisis:** Istilah gaul lokal mendominasi jembatan komunikasi digital konsumen. Penyesuaian algoritma pengenal teks pada tiga puluh ragam kosakata terpopuler ini akan memangkas risiko kegagalan translasi pada mesin kasir otomatis.")
+            st.info("💡 **Explanatory Insight:** Singkatan dan istilah informal menduduki peringkat teratas dalam pola ketikan kasir sehari-hari. Integrasi pasokan data dari 1.231 entri slang utama terbukti mampu memotong risiko kegagalan pemrosesan bahasa alami di terminal kasir digital.")
 
         with col_row3_right:
             st.markdown("### 📌 PB-6: Distribusi Tipe Kuantitas")
@@ -376,7 +392,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig6 = px.bar(qty_counts, x="Tipe Kuantitas", y="Jumlah", color="Tipe Kuantitas", color_discrete_map={"Numerik (Angka)": C["hijau"], "Non-Numerik (Teks)": C["merah"]})
             fig6.update_layout(margin=dict(l=0, r=0, t=10, b=0), showlegend=False, height=380)
             st.plotly_chart(fig6, use_container_width=True)
-            st.info("💡 **Analisis:** Porsi penulisan kuantitas pesanan masih kerap memanfaatkan format alfabet terstruktur. Kebutuhan konverter teks ke angka menjadi komponen mutlak sebelum data dikirim menuju model pemrosesan bahasa alami.")
+            st.info("💡 **Explanatory Insight:** Penulisan kuantitas pesanan menggunakan format alfabet non-numerik masih konsisten muncul di dalam sistem. Pembangunan komponen penerjemah kata sebelum data menyentuh model inti menjadi langkah pengamanan wajib guna menghindari kegagalan kalkulasi final.")
 
         st.markdown("---")
         st.markdown("### 📌 PB-7: Dominasi Kategori Masakan di Database Produk")
@@ -386,7 +402,7 @@ elif halaman == "📊 Analisis Bisnis":
         fig7 = px.bar(kat_counts, x="Jumlah Produk", y="Kategori", orientation="h", color_discrete_sequence=[C["biru"]])
         fig7.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
         st.plotly_chart(fig7, use_container_width=True)
-        st.info("💡 **Analisis:** Volume kelompok menu tertentu menumpuk melampaui variasi masakan yang lain. Penambahan sampel data teks baru untuk kategori yang sepi pengunjung diperlukan demi menjaga keseimbangan akurasi prediksi lintas menu.")
+        st.info("💡 **Explanatory Insight:** Inventarisasi 18.558 manifes makanan memperlihatkan penumpukan variasi produk pada segmen masakan tertentu. Ketidakseimbangan representasi data ini memicu risiko bias pengenalan teks, sehingga penambahan sampel kalimat baru untuk kelompok kategori minoritas mutlak dilakukan.")
 
     else:
         st.warning("Tidak ada data yang cocok dengan filter saat ini.")
