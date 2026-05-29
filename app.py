@@ -334,7 +334,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig1 = px.bar(top_produk, x="Jumlah Pesanan", y="Produk", orientation="h", color_discrete_sequence=[C["biru"]])
             fig1.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig1, use_container_width=True)
-            st.info("💡 **Explanatory Insight:** Evaluasi terhadap data transaksional membuktikan adanya penumpukan volume pesanan pada variasi menu tertentu. Konsentrasi pesanan yang timpang ini menegaskan urgensi alokasi stok bahan baku secara asimetris, fokus penuh pada dua puluh menu utama penentu omzet usaha.")
+            st.info("💡 **Explanatory Insight:** Evaluasi terhadap data transaksional membuktikan adanya penumpukan volume pesanan pada variasi menu tertentu. Konsentrasi pesanan yang tidak seimbang ini menegaskan urgensi alokasi stok bahan baku secara asimetris, fokus penuh pada dua puluh menu utama penentu omzet usaha.")
 
         with col_row1_right:
             st.markdown("### 📌 PB-2: Sebaran Harga Satuan")
@@ -370,7 +370,7 @@ elif halaman == "📊 Analisis Bisnis":
             fig4 = px.pie(eksplisit_counts, names="Tipe", values="Jumlah", color="Tipe", color_discrete_map={"Harga Disebutkan": C["biru"], "Harga Tidak Disebutkan": C["abu"]}, hole=0.4)
             fig4.update_layout(margin=dict(l=0, r=0, t=10, b=0), height=380)
             st.plotly_chart(fig4, use_container_width=True)
-            st.info("💡 **Explanatory Insight:** Rekam log membuktikan sebanyak 56 persen pesan masuk mengabaikan pencantuman harga barang. Temuan ini menegaskan bahwa model kecerdasan buatan wajib mengintegrasikan modul pencarian silang otomatis ke database menu internal, menolak ketergantungan penuh pada teks kasir.")
+            st.info("💡 **Explanatory Insight:** Rekam log membuktikan sebagian besar pesan masuk mengabaikan pencantuman harga barang secara jelas. Temuan ini menegaskan bahwa model kecerdasan buatan wajib mengintegrasikan modul pencarian silang otomatis ke database menu internal, menolak ketergantungan penuh pada teks kasir.")
 
         st.markdown("---")
         col_row3_left, col_row3_right = st.columns(2, gap="medium")
@@ -402,7 +402,7 @@ elif halaman == "📊 Analisis Bisnis":
         fig7 = px.bar(kat_counts, x="Jumlah Produk", y="Kategori", orientation="h", color_discrete_sequence=[C["biru"]])
         fig7.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=0, r=0, t=10, b=0), height=380)
         st.plotly_chart(fig7, use_container_width=True)
-        st.info("💡 **Explanatory Insight:** Inventarisasi 18.558 manifes makanan memperlihatkan penumpukan variasi produk pada segmen masakan tertentu. Ketidakseimbangan representasi data ini memicu risiko bias pengenalan teks, sehingga penambahan sampel kalimat baru untuk kelompok kategori minoritas mutlak dilakukan.")
+        st.info("💡 **Explanatory Insight:** Inventarisasi 18.558 manifes makanan memperlihatkan penumpukan variasi produk pada segmen masakan tertentu. Ketidakseimbangan representasi data ini memicu risiko bias pengenalan teks, sehingga penambahan sampel kalimat baru untuk kelompok kategori minoritas dilakukan.")
 
     else:
         st.warning("Tidak ada data yang cocok dengan filter saat ini.")
@@ -426,25 +426,53 @@ elif halaman == "💬 Simulasi ChatKasir":
         tombol = st.button("🚀 Proses & Ekstrak Entitas", type="primary", use_container_width=True)
 
     with col_output:
-        st.subheader("📤 Hasil Ekstraksi Model")
+        st.subheader("📤 Hasil Ekstraksi Model AI")
 
         if not tombol:
             st.markdown("<div style='background:#f0f4f8; border-radius:10px; padding:50px 30px; text-align:center; color:#888; min-height:200px;'>⬅️ Tekan Tombol Proses</div>", unsafe_allow_html=True)
         else:
-            with st.spinner("⚙️ Menormalisasi slang..."):
-                import time, json
-                time.sleep(1.0)
-                df_slang_sim = muat_slang()
-                kamus         = dict(zip(df_slang_sim["slang"], df_slang_sim["formal"]))
-                teks_norm = " ".join(kamus.get(w, w) for w in teks_input.lower().split())
-                hasil = {
-                    "status"              : "sukses",
-                    "teks_asli"           : teks_input.strip(),
-                    "teks_ternormalisasi" : teks_norm.strip(),
-                    "entitas_terekstrak"  : [{"produk" : "- (model belum terhubung)", "jumlah" : "-", "harga"  : "-"}],
+            with st.spinner("⚙️ Menghubungi Otak AI di Hugging Face Spaces..."):
+                import requests
+                import json
+                
+                # Konfigurasi Endpoint API menembak langsung ke Hugging Face Space
+                API_URL = "https://achmadrifan-chatkasir.hf.space/predict" 
+                
+                # Menggunakan label raw_text sesuai spesifikasi payload pada API
+                payload = {"raw_text": teks_input}
+                
+                # Menambahkan kunci akses autentikasi yang diminta oleh server
+                headers = {
+                    "X-API-Key": "changeme",
+                    "Content-Type": "application/json"
                 }
-
-            st.success("✅ Normalisasi selesai!")
-            st.code(json.dumps(hasil, ensure_ascii=False, indent=2), language="json")
-            st.markdown("**📋 Ringkasan Pesanan:**")
-            st.dataframe(pd.DataFrame(hasil["entitas_terekstrak"]), use_container_width=True)
+                
+                try:
+                    # Menyisipkan parameter headers ke dalam request
+                    response = requests.post(API_URL, json=payload, headers=headers)
+                    
+                    if response.status_code == 200:
+                        hasil = response.json()
+                        st.success("✅ Ekstraksi Berhasil!")
+                        st.code(json.dumps(hasil, ensure_ascii=False, indent=2), language="json")
+                        
+                        st.markdown("**📋 Ringkasan Pesanan:**")
+                        st.dataframe(pd.DataFrame(hasil), use_container_width=True)
+                        
+                    elif response.status_code == 422:
+                        st.error("❌ Validasi Gagal: Format payload tidak sesuai dengan skema API (Unprocessable Entity).")
+                        st.json(response.json())
+                    elif response.status_code == 400:
+                        st.error("❌ Validasi Gagal: Teks terlalu pendek (Minimal 5 karakter).")
+                    elif response.status_code == 401:
+                        st.error("❌ Autentikasi Gagal: API Key salah atau ditolak oleh server.")
+                    elif response.status_code == 503:
+                        st.error("❌ API Degraded: Model AI di Hugging Face sedang dimuat. Coba lagi dalam 15 detik.")
+                    else:
+                        st.error(f"❌ Gagal memproses. Kode Error: {response.status_code}")
+                        st.json(response.json())
+                        
+                except requests.exceptions.ConnectionError:
+                    st.error("❌ Gagal terhubung ke URL Hugging Face. Pastikan koneksi internet Anda aktif dan Space dalam keadaan 'Running'.")
+                except Exception as e:
+                    st.error(f"❌ Terjadi kesalahan sistem: {e}")
