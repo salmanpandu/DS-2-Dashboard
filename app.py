@@ -421,7 +421,8 @@ elif halaman == "💬 Simulasi ChatKasir":
 
     with col_input:
         st.subheader("✍️ Teks Obrolan Pelanggan")
-        teks_contoh = "kak pesen 2 nasi goreng spesial sama 1 es teh manis ya, bisa minta totalnya berapa?"
+        teks_contoh = """[29/5, 07.14] +62 811-2222-3333: order paket ayam bakar madu 10 pack
+[29/5, 07.21] Warung Sejahtera: siap harganya 35k"""
         teks_input = st.text_area(label="Ketik teks obrolan di sini:", value=teks_contoh, height=200, label_visibility="collapsed")
         tombol = st.button("🚀 Proses & Ekstrak Entitas", type="primary", use_container_width=True)
 
