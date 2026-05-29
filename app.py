@@ -241,7 +241,7 @@ df_filtered = terapkan_filter(
 if halaman == "Ringkasan Data":
 
     st.markdown(f"<h1 style='color:{C['hijau_gelap']};'>Ringkasan Dataset ChatKasir</h1>", unsafe_allow_html=True)
-    st.markdown("Ikhtisar pangkalan data utama yang menyuplai mesin kecerdasan buatan, mencakup log percakapan sintetis, manifes produk, dan leksikon slang.")
+    st.markdown("Ringkasan data utama yang digunakan untuk melatih model AI, meliputi log percakapan, daftar produk, dan kamus *slang*.")
 
     df_synth = muat_sintetis()
     df_food  = muat_makanan()
@@ -257,23 +257,23 @@ if halaman == "Ringkasan Data":
 
     st.subheader("Formulasi Pertanyaan Bisnis")
     st.markdown(
-        "Rumusan ini mendefinisikan batas evaluasi analitik, menahan proses perburuan data acak, dan memfokuskan ekstraksi wawasan pada tindakan koreksi operasional UMKM yang terukur."
+        "Pertanyaan bisnis menentukan arah eksplorasi data. Pendekatan ini mencegah analisis acak dan memastikan setiap temuan (*insight*) dapat diubah menjadi keputusan operasional UMKM yang terukur."
     )
     
     with st.expander("Metode SMART + 4W"):
         st.markdown(
-            "Kerangka Kerja SMART memaksa pertanyaan menjadi Spesifik, Terukur, Berorientasi aksi, Relevan, dan Dibatasi waktu. "
-            "Integrasi formula 4W (What, Why, Where, When) mempertajam sudut pandang sehingga setiap metrik visual bermuara pada satu keputusan eksekutif."
+            "Metode SMART memandu pembuatan target yang Spesifik, Terukur, Berorientasi aksi, Relevan, dan Dibatasi waktu. "
+            "Penggunaan formula 4W (What, Why, Where, When) memastikan setiap grafik membantu eksekusi di lapangan."
         )
 
     pb_data = pd.DataFrame([
-        {"Kode": "PB-1", "Fokus": "What", "Pertanyaan": "Apa 20 produk yang paling sering dipesan pelanggan?", "Tindakan Koreksi": "Fokuskan kapasitas suplai pada produk penentu omzet"},
-        {"Kode": "PB-2", "Fokus": "What", "Pertanyaan": "Berapa rata-rata & median harga satuan produk eksplisit?", "Tindakan Koreksi": "Tentukan batas harga aman menggunakan metrik median"},
-        {"Kode": "PB-3", "Fokus": "What", "Pertanyaan": "Bagaimana distribusi segmentasi harga pasar?", "Tindakan Koreksi": "Eksekusi strategi penjualan silang (bundling) berbasis volume"},
-        {"Kode": "PB-4", "Fokus": "Why",  "Pertanyaan": "Mengapa 56% pesanan masuk tanpa harga eksplisit?", "Tindakan Koreksi": "Bangun jalur silang otomatis ke pangkalan harga internal"},
-        {"Kode": "PB-5", "Fokus": "What", "Pertanyaan": "Apa kata slang yang mendominasi percakapan?", "Tindakan Koreksi": "Kalibrasi mesin pengenalan bahasa pada kosakata utama"},
-        {"Kode": "PB-6", "Fokus": "What", "Pertanyaan": "Bagaimana sebaran penulisan kuantitas pesanan?", "Tindakan Koreksi": "Terapkan modul pengubah teks alfabetikal menjadi angka mutlak"},
-        {"Kode": "PB-7", "Fokus": "What", "Pertanyaan": "Kategori produk apa yang menguasai pangkalan data?", "Tindakan Koreksi": "Suntikkan data latih paksa pada kategori minoritas"},
+        {"Kode": "PB-1", "Fokus": "What", "Pertanyaan": "Apa 20 produk yang paling sering dipesan pelanggan?", "Tindakan Koreksi": "Fokuskan kapasitas pasokan pada menu penyumbang omzet tertinggi"},
+        {"Kode": "PB-2", "Fokus": "What", "Pertanyaan": "Berapa rata-rata & median harga satuan produk eksplisit?", "Tindakan Koreksi": "Tentukan batas harga acuan menggunakan metrik median"},
+        {"Kode": "PB-3", "Fokus": "What", "Pertanyaan": "Bagaimana distribusi segmentasi harga pasar?", "Tindakan Koreksi": "Eksekusi strategi *bundling* produk berbasis volume penjualan"},
+        {"Kode": "PB-4", "Fokus": "Why",  "Pertanyaan": "Mengapa 56% pesanan masuk tanpa menyebutkan harga?", "Tindakan Koreksi": "Bangun jalur silang otomatis ke *database* harga internal toko"},
+        {"Kode": "PB-5", "Fokus": "What", "Pertanyaan": "Apa kata slang yang mendominasi percakapan?", "Tindakan Koreksi": "Kalibrasi model pengenalan bahasa pada kosakata informal utama"},
+        {"Kode": "PB-6", "Fokus": "What", "Pertanyaan": "Bagaimana sebaran penulisan kuantitas pesanan?", "Tindakan Koreksi": "Terapkan *pipeline* pengubah teks abjad menjadi angka absolut"},
+        {"Kode": "PB-7", "Fokus": "What", "Pertanyaan": "Kategori produk apa yang mendominasi pangkalan data?", "Tindakan Koreksi": "Tambahkan sampel latih untuk kategori menu minoritas"},
     ])
     st.dataframe(pb_data, use_container_width=True, hide_index=True)
 
@@ -297,7 +297,7 @@ elif halaman == "Analisis Bisnis":
     import plotly.express as px
 
     st.markdown(f"<h1 style='color:{C['hijau_gelap']};'>Analisis Bisnis Terpadu</h1>", unsafe_allow_html=True)
-    st.markdown(f"Mengeksekusi pemrosesan waktu nyata pada {len(df_filtered):,} baris data pesanan.")
+    st.markdown(f"Mengeksekusi pemrosesan data secara dinamis pada {len(df_filtered):,} baris pesanan.")
 
     df_hv = df_filtered[df_filtered["harga_valid"]]
 
@@ -321,7 +321,7 @@ elif halaman == "Analisis Bisnis":
             fig1.update_layout(yaxis={'categoryorder':'total ascending'})
             st.plotly_chart(fig1, use_container_width=True)
             
-            render_insight("Konsentrasi volume pesanan menumpuk pada dua puluh menu utama. Mayoritas variasi produk di luar daftar ini membebani rantai pasok. Data ini mendesak penerapan prinsip Occam's Razor dalam manajemen inventaris. Pangkas menu yang memakan biaya simpan tanpa memberikan perputaran modal nyata. Fokuskan seluruh kapasitas dapur untuk mengamankan stok bahan baku para penyumbang omzet utama ini.")
+            render_insight("Pesanan pelanggan terpusat pada dua puluh menu utama. Mempertahankan banyak variasi menu di luar daftar ini akan meningkatkan beban inventaris. Pemilik usaha perlu memangkas produk dengan tingkat perputaran lambat. Kapasitas dapur dapat dialihkan sepenuhnya untuk mengamankan ketersediaan bahan baku penyumbang omzet terbesar.")
 
         with col_row1_right:
             st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-2: Sebaran Kepadatan Harga</h3>", unsafe_allow_html=True)
@@ -331,7 +331,7 @@ elif halaman == "Analisis Bisnis":
                 fig2.update_layout(xaxis_title="Harga Satuan (Rp)", yaxis_title="Frekuensi Kemunculan")
                 st.plotly_chart(fig2, use_container_width=True)
                 
-                render_insight("Rentang harga valid terkunci padat di bawah angka 50.000 rupiah. Kurva distribusi yang condong ke kiri membuktikan sensitivitas dompet pelanggan sangat tajam. Merilis menu berharga premium di tengah ekosistem ini adalah bunuh diri finansial. Angka median berfungsi sebagai batas psikologis. Melewati batas ini berarti menantang daya beli pasar yang sudah terbentuk kuat.")
+                render_insight("Mayoritas transaksi berada di bawah angka Rp50.000. Kurva distribusi yang condong ke kiri menunjukkan tingginya sensitivitas harga dari pembeli. Menjual menu dengan harga premium di segmen pasar ini memiliki risiko kegagalan tinggi. Angka median dapat digunakan sebagai acuan batas atas saat toko menyusun katalog produk baru.")
             else:
                 st.info("Rentang data harga valid tidak ditemukan pada pengaturan filter saat ini.")
 
@@ -355,10 +355,10 @@ elif halaman == "Analisis Bisnis":
             fig3.update_layout(showlegend=False)
             st.plotly_chart(fig3, use_container_width=True)
             
-            render_insight("Dominasi absolut berada di segmen harga murah dan sedang. Realitas ekonomi pasar menuntut eksekusi strategi penjualan berbasis volume. Pelanggan mencari batas aman pengeluaran harian. Rancang paket kombo yang menggabungkan menu pendorong lalu lintas dengan produk pelengkap bermargin tinggi. Pendekatan ini memaksa nilai transaksi naik tanpa memicu penolakan dari konsumen.")
+            render_insight("Segmen harga murah dan sedang menguasai distribusi pesanan. Fakta ini menuntut strategi bisnis berbasis volume (*volume-based*). UMKM disarankan menyusun paket penawaran (*bundling*) yang menggabungkan menu terlaris dengan produk pendamping bermargin besar. Taktik ini menaikkan nilai rata-rata transaksi tanpa membuat pelanggan enggan berbelanja.")
 
         with col_row2_right:
-            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-4: Ketergantungan Kalkulasi Harga</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-4: Pencantuman Harga Eksplisit</h3>", unsafe_allow_html=True)
             eksplisit_counts = df_filtered["harga_eksplisit"].value_counts().reset_index()
             eksplisit_counts.columns = ["Tipe", "Jumlah"]
             eksplisit_counts["Tipe"] = eksplisit_counts["Tipe"].map({True: "Harga Dituliskan", False: "Harga Diabaikan"})
@@ -366,13 +366,13 @@ elif halaman == "Analisis Bisnis":
             fig4.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', font=dict(color=C["hijau_gelap"]), margin=dict(l=0, r=0, t=20, b=0))
             st.plotly_chart(fig4, use_container_width=True)
             
-            render_insight("Sebanyak 56 persen pesanan masuk mengabaikan nominal harga. Pelanggan melempar beban kalkulasi secara penuh kepada operator toko. Fakta ini menghancurkan asumsi bahwa teks masukan cukup untuk memproses transaksi. Otak buatan yang dibangun wajib memiliki jalur silang khusus ke pangkalan data harga internal. Mengandalkan model bahasa untuk menebak harga menciptakan celah kerugian finansial.")
+            render_insight("Data mencatat 56% pesan dari pelanggan tidak menyertakan harga barang. Model pemrosesan bahasa tidak bisa hanya mengandalkan ekstraksi teks mentah dari obrolan. Otak AI harus dihubungkan langsung dengan *database* harga internal toko. Mengandalkan mesin untuk memprediksi nominal pesanan membuka celah kerugian finansial akibat kesalahan perhitungan.")
 
         st.markdown("---")
         col_row3_left, col_row3_right = st.columns(2, gap="large")
 
         with col_row3_left:
-            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-5: Pemetaan Kosakata Cair</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-5: Pemetaan Kosakata Informal</h3>", unsafe_allow_html=True)
             counter_slang, _ = hitung_slang_aktif()
             top_slang = pd.DataFrame(counter_slang.most_common(20), columns=["Slang", "Frekuensi"])
             fig5 = px.bar(top_slang, x="Frekuensi", y="Slang", orientation="h", color_discrete_sequence=[C["hijau_muda"]])
@@ -380,22 +380,22 @@ elif halaman == "Analisis Bisnis":
             fig5.update_layout(yaxis={'categoryorder':'total ascending'})
             st.plotly_chart(fig5, use_container_width=True)
             
-            render_insight("Interaksi digital dikuasai oleh frasa nonformal dan singkatan lokal. Pelanggan menolak berbicara kaku. Tabel frekuensi membuktikan bahwa mengabaikan normalisasi teks sama dengan membutakan algoritma. Pemetaan ribuan entri slang ini bertindak sebagai fondasi jembatan komunikasi. Tanpanya, akurasi pemrosesan bahasa alami runtuh seketika saat menghadapi teks dunia nyata.")
+            render_insight("Pelanggan lebih suka menggunakan singkatan dan frasa gaul. Normalisasi teks menjadi fondasi mutlak sebelum data diproses oleh algoritma tingkat lanjut. Penerapan ribuan kamus *slang* ini memastikan model NLP dapat menerjemahkan pesan secara akurat meskipun susunan abjad dari pelanggan tidak sesuai ejaan standar.")
 
         with col_row3_right:
-            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-6: Format Hitungan Deskriptif</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-6: Format Hitungan Pesanan</h3>", unsafe_allow_html=True)
             qty_counts = df_filtered["qty_numerik"].value_counts().reset_index()
             qty_counts.columns = ["Tipe Kuantitas", "Jumlah"]
-            qty_counts["Tipe Kuantitas"] = qty_counts["Tipe Kuantitas"].map({True: "Numerik (Angka Mutlak)", False: "Deskriptif (Alfabetikal)"})
-            fig6 = px.bar(qty_counts, x="Tipe Kuantitas", y="Jumlah", color="Tipe Kuantitas", color_discrete_map={"Numerik (Angka Mutlak)": C["hijau_gelap"], "Deskriptif (Alfabetikal)": C["hijau_sedang"]})
+            qty_counts["Tipe Kuantitas"] = qty_counts["Tipe Kuantitas"].map({True: "Numerik (Angka)", False: "Deskriptif (Abjad)"})
+            fig6 = px.bar(qty_counts, x="Tipe Kuantitas", y="Jumlah", color="Tipe Kuantitas", color_discrete_map={"Numerik (Angka)": C["hijau_gelap"], "Deskriptif (Abjad)": C["hijau_sedang"]})
             fig6 = terapkan_tema_bersih(fig6)
             fig6.update_layout(showlegend=False)
             st.plotly_chart(fig6, use_container_width=True)
             
-            render_insight("Konsumen sering mengetikkan jumlah pesanan menggunakan abjad bebas atau pecahan. Mesin tidak memahami teks hitungan secara bawaan. Modul penerjemah teks ke angka mutlak wajib diletakkan pada lapisan terluar pemrosesan. Membiarkan format mentah ini menembus model inti jaringan saraf akan melumpuhkan fungsi kalkulasi matematis sistem mesin kasir.")
+            render_insight("Sebagian besar pembeli mengekspresikan jumlah pesanan menggunakan tulisan huruf atau pecahan. Mesin tidak secara otomatis mengenali hitungan deskriptif ini. Tahap penyaringan data perlu melibatkan *pipeline* pengubah teks abjad ke dalam bentuk numerik agar kalkulasi matematis tagihan tidak mengalami kegagalan proses.")
 
         st.markdown("---")
-        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-7: Bias Representasi Menu Masakan</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>PB-7: Distribusi Kategori Masakan</h3>", unsafe_allow_html=True)
         df_food = muat_makanan()
         kat_counts = df_food["kategori"].value_counts().reset_index()
         kat_counts.columns = ["Kategori", "Jumlah Produk"]
@@ -404,10 +404,10 @@ elif halaman == "Analisis Bisnis":
         fig7.update_layout(yaxis={'categoryorder':'total ascending'})
         st.plotly_chart(fig7, use_container_width=True)
         
-        render_insight("Inventarisasi belasan ribu nama produk memperlihatkan ketimpangan mencolok pada kategori tertentu. Kondisi ini melahirkan bias laten. Model kecerdasan buatan menjadi sangat tajam mengenali satu jenis menu namun tumpul total pada kategori lain. Anda harus menyuntikkan sampel teks tambahan secara paksa untuk kategori minoritas agar mesin tidak diskriminatif dalam membaca ragam pesanan pelanggan.")
+        render_insight("Terdapat ketimpangan distribusi pada 18.558 manifes makanan. Kondisi ini membuat algoritma rentan mengalami bias pelatihan (*training bias*). Model berisiko terlalu mahir mengenali hidangan populer tetapi gagal mengekstrak kategori minoritas. Penambahan sampel teks latih sintetis diperlukan untuk menyeimbangkan kemampuan deteksi entitas.")
 
     else:
-        st.warning("Pengaturan filter gagal menemukan kecocokan pada pangkalan data.")
+        st.warning("Pengaturan filter tidak cocok dengan baris data mana pun.")
 
 
 # ==============================================================================
@@ -417,24 +417,24 @@ elif halaman == "Analisis Bisnis":
 elif halaman == "Simulasi ChatKasir":
 
     st.markdown(f"<h1 style='color:{C['hijau_gelap']};'>Simulasi Ekstraksi AI</h1>", unsafe_allow_html=True)
-    st.markdown("Sistem ini terhubung langsung dengan endpoint arsitektur saraf tiruan untuk mengekstrak entitas pesanan secara otomatis.")
+    st.markdown("Modul pengujian yang terhubung langsung dengan *endpoint* API jaringan saraf untuk mengekstrak pesanan otomatis.")
 
     col_input, col_output = st.columns([1, 1], gap="large")
 
     with col_input:
-        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>Masukan Log Percakapan</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>Log Obrolan Pelanggan</h3>", unsafe_allow_html=True)
         teks_contoh = """[29/5, 07.14] +62 811-2222-3333: order paket ayam bakar madu 10 pack
 [29/5, 07.21] Warung Sejahtera: siap harganya 35k"""
         teks_input = st.text_area(label="Ketik teks obrolan di sini", value=teks_contoh, height=200, label_visibility="collapsed")
-        tombol = st.button("Jalankan Ekstraksi Pemrosesan", type="primary", use_container_width=True)
+        tombol = st.button("Jalankan Ekstraksi AI", type="primary", use_container_width=True)
 
     with col_output:
-        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>Hasil Pembacaan Mesin</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:{C['hijau_gelap']}; font-size:1.2rem;'>Hasil Ekstraksi Mesin</h3>", unsafe_allow_html=True)
 
         if not tombol:
             st.markdown(f"<div style='background:{C['hijau_bg']}; border-radius:6px; padding:45px 30px; text-align:center; color:{C['hijau_sedang']}; min-height:200px; border: 1px dashed {C['hijau_muda']};'>Menunggu Perintah Eksekusi</div>", unsafe_allow_html=True)
         else:
-            with st.spinner("Menghubungi infrastruktur saraf tiruan di Hugging Face Spaces..."):
+            with st.spinner("Menghubungi model AI di Hugging Face Spaces..."):
                 import requests
                 import json
                 
@@ -450,26 +450,26 @@ elif halaman == "Simulasi ChatKasir":
                     
                     if response.status_code == 200:
                         hasil = response.json()
-                        st.markdown(f"<div style='background-color: {C['hijau_bg']}; color: {C['hijau_gelap']}; padding: 12px; border-radius: 4px; margin-bottom: 15px; font-weight: bold;'>Pembacaan Entitas Berhasil Diselesaikan</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='background-color: {C['hijau_bg']}; color: {C['hijau_gelap']}; padding: 12px; border-radius: 4px; margin-bottom: 15px; font-weight: bold;'>Ekstraksi Entitas Berhasil</div>", unsafe_allow_html=True)
                         st.code(json.dumps(hasil, ensure_ascii=False, indent=2), language="json")
                         
-                        st.markdown("<p style='font-weight: 600; margin-top: 15px;'>Tabel Hasil Rekapitulasi Pembeli:</p>", unsafe_allow_html=True)
+                        st.markdown("<p style='font-weight: 600; margin-top: 15px;'>Rekapitulasi Tabel Pemesanan:</p>", unsafe_allow_html=True)
                         st.dataframe(pd.DataFrame(hasil), use_container_width=True)
                         
                     elif response.status_code == 422:
-                        st.error("Kegagalan Validasi: Format paket data ditolak akibat ketidaksesuaian skema API sistem internal.")
+                        st.error("Validasi Gagal: Format payload tidak sesuai dengan skema API.")
                         st.json(response.json())
                     elif response.status_code == 400:
-                        st.error("Kegagalan Parameter: Kepadatan teks obrolan tidak memenuhi batas minimal evaluasi mesin.")
+                        st.error("Validasi Gagal: Teks terlalu pendek (minimal 5 karakter).")
                     elif response.status_code == 401:
-                        st.error("Penolakan Akses: Kunci autentikasi peladen gagal diverifikasi oleh sistem pengamanan utama.")
+                        st.error("Autentikasi Gagal: API Key tidak valid.")
                     elif response.status_code == 503:
-                        st.error("Latensi Infrastruktur: Otak jaringan saraf sedang dibangunkan dari status rehat. Kirimkan ulang permintaan.")
+                        st.error("Server Sibuk: Model AI sedang dimuat ulang (Cold Start). Silakan coba lagi dalam 15 detik.")
                     else:
-                        st.error(f"Kegagalan Pemrosesan Kode {response.status_code}")
+                        st.error(f"Gagal memproses. Kode Error: {response.status_code}")
                         st.json(response.json())
                         
                 except requests.exceptions.ConnectionError:
-                    st.error("Kegagalan Jaringan: Jalur akses menuju infrastruktur awan Hugging Face terputus.")
+                    st.error("Koneksi Gagal: Tidak dapat menghubungi server Hugging Face.")
                 except Exception as e:
-                    st.error(f"Kegagalan Modul Internal: {e}")
+                    st.error(f"Kesalahan Sistem: {e}")
